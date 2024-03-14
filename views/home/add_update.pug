@@ -1,19 +1,51 @@
 include ../head.pug
 body
-    .container.mt-5
-      h1 Add/Update Event
-      form(action="/submit-event-form" method="POST")
-        .mb-3
-          label(for="recipeName" class="form-label") Recipe Name
-          input(type="text" class="form-control" id="recipeName" name="recipeName" required)
-        .mb-3
-          label(for="ingredients" class="form-label") Ingredients
-          input(type="text" class="form-control" id="ingredients" name="ingredients" required)
-        .mb-3
-          label(for="stages" class="form-label") Stages
-          input(type="text" class="form-control" id="stages" name="stages" required)
-        button(type="submit" class="btn btn-primary") Add/Edit
+  .container.mt-5
+    h1 Add/Update Event
+    form(action="/submit-event-form" method="POST")
+      .mb-3
+        label(for="recipeName" class="form-label") Recipe Name
+        input(type="text" class="form-control" id="recipeName" name="recipeName" required)
+      .mb-3
+        label(for="ingredients" class="form-label") Ingredients
+        input(type="text" class="form-control" id="ingredients" name="ingredients" required)
+      .mb-3
+        label(for="stages" class="form-label") Stages
+        input(type="text" class="form-control" id="stages" name="stages" required)
+      button(type="submit" class="btn btn-primary") Add/Edit
+  script.
+    
 
-    script.
-        
+    if ("#{mode}" === "Update") {
+      const eventData = !{JSON.stringify(eventData || {})}.recipe;
+      document.getElementById('recipeName').value = eventData.recipeName || '';
+
+
+      document.getElementById('ingredients').value = eventData.ingredients || '';
+      document.getElementById('stages').value = eventData.stages || '';
+
+    }
+
+    function submitForm() {
+      const eventData = {
+        recipeName: document.getElementById('recipeName').value,
+        ingredients: document.getElementById('ingredients').value,
+        stages: document.getElementById('stages').value,
+      };
+
+      const url = "#{mode}" === "Update" ? `/api/recipe/${!{JSON.stringify(eventData || {})}.id}` : '/api/recipe';
+      const method = "#{mode}" === "Update" ? 'put' : 'post';
+
+      axios[method](url, eventData).then(response => {
+        alert('Success!');
+        location.href = '/'
+      })
+      .catch(error => {
+        if(error.response)
+          alert(JSON.stringify(error.response.data.errors))
+        else
+          alert(error)
+      });
+    }
+
 
