@@ -1,0 +1,19 @@
+include ../head.pug
+body
+    .container.mt-5
+      h1 Add/Update Event
+      form(action="/submit-event-form" method="POST")
+        .mb-3
+          label(for="recipeName" class="form-label") Recipe Name
+          input(type="text" class="form-control" id="recipeName" name="recipeName" required)
+        .mb-3
+          label(for="ingredients" class="form-label") Ingredients
+          input(type="text" class="form-control" id="ingredients" name="ingredients" required)
+        .mb-3
+          label(for="stages" class="form-label") Stages
+          input(type="text" class="form-control" id="stages" name="stages" required)
+        button(type="submit" class="btn btn-primary") Add/Edit
+
+    script.
+        
+
